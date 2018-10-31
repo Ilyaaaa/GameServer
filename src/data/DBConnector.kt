@@ -5,7 +5,6 @@ import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.SchemaUtils.create
 import org.jetbrains.exposed.sql.transactions.TransactionManager
-import data.DBConnector.Players.default
 import java.sql.Connection
 
 object DBConnector {

@@ -1,5 +1,3 @@
-package main
-
 import java.util.*
 
 class Calendar (val server: Server) {

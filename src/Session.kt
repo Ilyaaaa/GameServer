@@ -1,5 +1,3 @@
-package main
-
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -277,11 +275,11 @@ class Session(private val server: Server, private val socket: Socket) : Runnable
         stop = true
 
         try {
+            server.clients.remove(this)
+
             writer.close()
             reader.close()
             socket.close()
-
-            server.clients.remove(this)
 
             for (client in server.clients) {
                 client.sendPlayerId(MessagesId.PLAYER_DISCONNECT_ID.id, player!!.id)

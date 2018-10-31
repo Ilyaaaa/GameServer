@@ -1,5 +1,3 @@
-package main
-
 import data.Map
 import data.Settings
 import java.io.IOException

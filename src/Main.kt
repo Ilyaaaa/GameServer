@@ -1,7 +1,5 @@
-package main
-
 import data.Settings
-import main.enums.ServerErrors
+import enums.ServerErrors
 import java.util.*
 
 private val server = Server()

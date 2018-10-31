@@ -3,12 +3,12 @@ package data
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.json.JSONArray
 import org.json.JSONObject
-import main.Server
-import main.enums.ServerErrors
+import Server
+import enums.ServerErrors
 import java.io.BufferedReader
 import java.io.File
 import kotlin.collections.ArrayList
-import main.Log
+import Log
 import data.enums.MapObjectsType
 import org.jetbrains.exposed.sql.selectAll
 

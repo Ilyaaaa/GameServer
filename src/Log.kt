@@ -1,5 +1,3 @@
-package main
-
 import java.io.File
 import java.util.logging.FileHandler
 import java.util.logging.Logger

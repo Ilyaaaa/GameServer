@@ -1,4 +1,4 @@
-package main.enums
+package enums
 
 enum class ServerErrors(val errorMessage: String) {
     INV_COMMAND("Invalid command"),

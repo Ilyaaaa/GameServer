@@ -10,6 +10,7 @@ import java.io.InputStreamReader
 import java.io.PrintWriter
 import java.net.Socket
 import data.DBConnector
+import data.objects.Stick
 
 class Session(private val server: Server, private val socket: Socket) : Runnable {
     private var stop = false
@@ -181,6 +182,10 @@ class Session(private val server: Server, private val socket: Socket) : Runnable
                             it.sendChatMessage(player!!.id, message)
                         }
                     }
+
+                    MessagesId.ADD_TO_INV_ID.id -> {
+
+                    }
                 }
             }
         } catch (ex: IOException) {
@@ -212,6 +217,11 @@ class Session(private val server: Server, private val socket: Socket) : Runnable
                         .put("position", player.position)
                         .put("x", player.x)
                         .put("y", player.y)
+                        .put(
+                                "inventory",
+                                JSONObject()
+                                        .put("sticks", JSONArray(player.inventory.sticks))
+                        )
                         .toString()
         )
     }
@@ -295,7 +305,7 @@ class Session(private val server: Server, private val socket: Socket) : Runnable
     }
 
     companion object {
-        data class Player(
+        data class Player (
                 val id: Long,
                 var nickname: String,
                 var email: String,
@@ -304,7 +314,13 @@ class Session(private val server: Server, private val socket: Socket) : Runnable
                 var y: Float,
                 var position: String,
                 var hp: Int
-        )
+        ) {
+            val inventory = Inventory()
+
+            inner class Inventory {
+                val sticks = ArrayList<Stick>()
+            }
+        }
 
         enum class MessagesId(val id: Int) {
             AUTHORISE_ID(0),
@@ -314,7 +330,8 @@ class Session(private val server: Server, private val socket: Socket) : Runnable
             PLAYER_DISCONNECT_ID(4),
             CHAT_ID(5),
             TIME_ID(6),
-            MAP_OBJECT_ID(7)
+            MAP_OBJECT_ID(7),
+            ADD_TO_INV_ID(8)
         }
     }
 }

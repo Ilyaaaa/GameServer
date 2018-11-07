@@ -275,22 +275,22 @@ class Map(private val server: Server){
                 if (level != 1) continue
                 val blockObjects = JSONArray()
                 trees.forEach {
-                    if (it.x in blockX .. blockX + blockSize && it.y in blockY .. blockY + blockSize)
+                    if (Math.floor(it.x.toDouble()).toInt() in blockX .. blockX + blockSize && Math.floor(it.y.toDouble()).toInt() in blockY .. blockY + blockSize)
                         blockObjects.put(JSONObject(it))
                 }
 
                 bushes.forEach {
-                    if (it.x in blockX .. blockX + blockSize && it.y in blockY .. blockY + blockSize)
+                    if (Math.floor(it.x.toDouble()).toInt() in blockX .. blockX + blockSize && Math.floor(it.y.toDouble()).toInt() in blockY .. blockY + blockSize)
                         blockObjects.put(JSONObject(it))
                 }
 
                 bonfires.forEach {
-                    if (it.x in blockX .. blockX + blockSize && it.y in blockY .. blockY + blockSize)
+                    if (Math.floor(it.x.toDouble()).toInt() in blockX .. blockX + blockSize && Math.floor(it.y.toDouble()).toInt() in blockY .. blockY + blockSize)
                         blockObjects.put(JSONObject(it))
                 }
 
                 sticks.forEach {
-                    if (it.x in blockX .. blockX + blockSize && it.y in blockY .. blockY + blockSize)
+                    if (Math.floor(it.x.toDouble()).toInt() in blockX .. blockX + blockSize && Math.floor(it.y.toDouble()).toInt() in blockY .. blockY + blockSize)
                         blockObjects.put(JSONObject(it))
                 }
 

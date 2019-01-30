@@ -11,22 +11,28 @@ import java.io.PrintWriter
 import java.net.Socket
 import data.DBConnector
 import data.objects.Stick
+import java.util.concurrent.Executors
+import java.util.concurrent.ScheduledFuture
+import java.util.concurrent.TimeUnit
 
 class Session(private val server: Server, private val socket: Socket) : Runnable {
     private var stop = false
     private val writer = PrintWriter(socket.getOutputStream(), true)
     private val reader = BufferedReader(InputStreamReader(socket.getInputStream()))
+    private lateinit var disconnector: Disconnector
     var player: Player? = null
     private val visiblePlayers = ArrayList<Session>()
 
     override fun run() {
         try {
             DBConnector.connect()
+            disconnector = Disconnector()
 
             Log.logInfo("Session started ${socket.inetAddress}")
 
             while (!stop && socket.isConnected && !socket.isClosed && !socket.isOutputShutdown) {
                 val request = reader.readLine()
+                disconnector.resetDisconnectTimer()
 //                println(request)
 
                 if (request == null) {
@@ -302,6 +308,32 @@ class Session(private val server: Server, private val socket: Socket) : Runnable
         }
 
         println("Clients: " + server.clients.size)
+    }
+
+    private inner class Disconnector {
+        private val delay = 10L
+        private val executor = Executors.newSingleThreadScheduledExecutor()
+        private lateinit var disconnectTask: ScheduledFuture<*>
+
+        init {
+            initTask()
+        }
+
+        private fun initTask() {
+            disconnectTask = executor.schedule({
+                executor.shutdown()
+                stop()
+            }, delay, TimeUnit.SECONDS)
+        }
+
+        fun resetDisconnectTimer() {
+            executor.execute {
+                if (!disconnectTask.isCancelled && !disconnectTask.isDone){
+                    disconnectTask.cancel(true)
+                    initTask()
+                }
+            }
+        }
     }
 
     companion object {
